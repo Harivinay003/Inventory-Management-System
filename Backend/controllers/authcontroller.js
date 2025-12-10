@@ -2,9 +2,9 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// REGISTER
 const registerUser = async (req, res) => {
   try {
+    console.log("Register attempt:", req.body);
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -23,18 +23,22 @@ const registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role:"user",
+      role: "staff",
     });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    console.log("User created:", user);
+
+    const token = jwt.sign(
+      { _id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      role:user.role,
+      role: user.role,
       token,
     });
   } catch (error) {
@@ -43,7 +47,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// LOGIN
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -56,21 +59,28 @@ const loginUser = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
+    if (!user.password) {
+      return res
+        .status(400)
+        .json({ message: "This account uses Google login. Please sign in with Google." });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { _id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
 
     res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      role:user.role,
+      role: user.role,
       token,
     });
   } catch (error) {

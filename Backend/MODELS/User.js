@@ -13,13 +13,13 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Please add a password"],
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user", // 👈 default role is staff unless changed manually
+      enum: ["staff", "admin"],
+      default: "staff",
     },
+    googleId: { type: String },
   },
   {
     timestamps: true,
