@@ -19,8 +19,6 @@ This is a full-stack **Inventory Management System** built using the **MERN stac
 - React.js + Vite
 - Axios for API communication
 - React Router DOM
-- Tailwind CSS
-- Framer Motion (animations)
 - React Toastify (notifications)
 - Dark Mode support
 
@@ -32,7 +30,6 @@ This is a full-stack **Inventory Management System** built using the **MERN stac
 - 🧑‍💼 **Role-Based Access Control** (Admin vs User)
 - 📋 **Inventory CRUD**: Create, Read, Update, Delete items
 - 🔍 **Search & Pagination** on item list
-- 🌓 **Dark Mode** & Responsive Design
 - 🔄 **Toast Notifications** and **Loading Spinners**
 - ✅ **Form Validation** & Error Handling
 - 🔁 **Reusable Components** with clean structure
